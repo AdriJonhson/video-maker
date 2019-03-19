@@ -1,2 +1,11 @@
-# video-maker
-Projeto open source para automatizar upload de vídeos
+# credentials format
+
+## Algorithmia
+
+File: `algorithmia.json`
+
+```
+    {
+        "apiKey": SECRET
+    } 
+```
