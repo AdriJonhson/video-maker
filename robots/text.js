@@ -12,21 +12,27 @@ const nlu = new NaturalLanguageUnderstandingV1({
     url: 'https://gateway.watsonplatform.net/natural-language-understanding/api'
 });
 
-async function robot(content){
-    await fetchcontentfromwikipedia(content)
-    sanitizeContent(content)
-    breakContentIntoSentences(content)
-    limitMaximumSentence(content)
-    await fetchKeywordsOfAllSentences(content)
+const state = require('./state.js');
 
-    async function fetchContentFromWikipedia()
+async function robot(){
+    const content = state.load();
+
+    await fetchContentFromWikipedia(content);
+    sanitizeContent(content);
+    breakContentIntoSentences(content);
+    limitMaximumSentence(content);
+    await fetchKeywordsOfAllSentences(content);
+
+    state.save(content);
+
+    async function fetchContentFromWikipedia(content)
     {
-        const algorithmiaAuthenticated = algorithmia(algorithmiaApiKey)
-        const wikipediaAlgorithm  = algorithmiaAuthenticated.algo("web/WikipediaParser/0.1.2?timeout=300")
-        const wikipediaResponse = await wikipediaAlgorithm.pipe(content.searchTerm)
-        const wikipediaContent = wikipediaResponse.get()
+        const algorithmiaAuthenticated = algorithmia(algorithmiaApiKey);
+        const wikipediaAlgorithm  = algorithmiaAuthenticated.algo("web/WikipediaParser/0.1.2?timeout=300");
+        const wikipediaResponse = await wikipediaAlgorithm.pipe(content.searchTerm);
+        const wikipediaContent = wikipediaResponse.get();
 
-        content.sourceContentOriginal = wikipediaContent.content
+        content.sourceContentOriginal = wikipediaContent.content;
     }
 
     function sanitizeContent()
