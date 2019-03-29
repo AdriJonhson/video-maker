@@ -12,12 +12,8 @@ const nlu = new NaturalLanguageUnderstandingV1({
     url: 'https://gateway.watsonplatform.net/natural-language-understanding/api'
 });
 
-
-
-
-
 async function robot(content){
-    await fetchContentFromWikipedia(content)
+    await fetchcontentfromwikipedia(content)
     sanitizeContent(content)
     breakContentIntoSentences(content)
     limitMaximumSentence(content)
